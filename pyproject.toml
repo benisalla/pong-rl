@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pong-rl"
+version = "0.1.0"
+description = "Atari Pong from pixels with every deep RL method (Karpathy policy gradient, REINFORCE, A2C, PPO, DQN, double and dueling DQN) in one PyTorch code base, with a built-in small Pong environment for CPU training, ALE Pong for the Kaggle/Colab notebook, curves, tests and examples."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+keywords = [
+  "reinforcement-learning", "pong", "atari", "gymnasium", "ale", "policy-gradient", "reinforce",
+  "a2c", "ppo", "dqn", "double-dqn", "dueling-dqn", "prioritized-replay", "pytorch",
+  "deep-reinforcement-learning", "educational",
+]
+dependencies = [
+  "numpy>=1.24",
+  "torch>=2.4",
+  "gymnasium>=1.0",
+  "ale-py>=0.9",
+  "matplotlib>=3.7",
+  "pillow>=9.0",
+]
+
+[project.scripts]
+pong-train = "pong_rl.train:main"
+pong-play = "pong_rl.play:main"
+pong-eval = "pong_rl.evaluate:main"
+pong-compare = "pong_rl.compare:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.9", "nbformat>=5.10"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pong_rl"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["notebooks/*.ipynb", "legacy/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["B905"]  # zip(strict=...) adds noise in short, same-length loops
+
+# `uv sync` picks the CPU-only torch wheels; plain `pip install -e .` still works
+# (pass --index-url https://download.pytorch.org/whl/cpu to pip for CPU wheels).
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
