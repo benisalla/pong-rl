@@ -2,9 +2,10 @@
 
 1. checks that autograd on ``-A log pi(a|x)`` gives exactly Karpathy's hand-written gradient
    ``A * (y - p)`` (the "fake label" trick);
-2. trains the 2-layer MLP on frame differences for 150k steps (~1.5 min). This is the slowest
-   learner of the repo per sample (no baseline, no CNN, Monte Carlo returns): expect the
-   training score to creep up from -3.5, not to win yet. The full run (2M steps) is in the README.
+2. trains the 2-layer MLP on frame differences for 600k steps (2-5 min). This is the slowest
+   learner of the repo per sample (no baseline, no CNN, Monte Carlo returns): after 600k steps it is
+   around break-even (it won 9 of 20 games when this was run); the full 2M-step run in the README
+   wins 97% of its games at about +3.
 
     python examples/03_karpathy_policy_gradient.py
 """
@@ -25,6 +26,6 @@ print("autograd  -dL/dlogit :", (-logits.grad).numpy().round(4))
 print("Karpathy  A (y - p)  :", (adv * (y - torch.sigmoid(logits))).detach().numpy().round(4))
 
 # 2. a short run
-cfg = make_config("pg", steps=150_000, eval_every=50_000, final_eval_episodes=20, out="examples/output/03_pg")
+cfg = make_config("pg", steps=600_000, eval_every=100_000, final_eval_episodes=20, out="examples/output/03_pg")
 res = run(cfg)
 print(f"pg after {cfg.steps:,} steps: score {res['mean']:+.2f}")

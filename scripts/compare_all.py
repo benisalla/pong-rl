@@ -42,10 +42,11 @@ def main() -> None:
                               n_step=a.n_step if dqn else None)
             run(cfg)
     runs = [os.path.join(a.out_root, x) for x in ORDER if os.path.exists(os.path.join(a.out_root, x, "log.json"))]
+    game = "small" if a.env == "mini" else "ALE"
     compare_main(runs + ["--markdown", os.path.join(a.assets, f"{a.env}_pong_results.md"),
                          "--plot", os.path.join(a.assets, f"{a.env}_pong_curves.png"),
                          "--plot-time", os.path.join(a.assets, f"{a.env}_pong_curves_time.png"),
-                         "--title", f"every method on the {a.env} Pong (one seed, one CPU thread)"])
+                         "--title", f"every method on the {game} Pong (one seed, one CPU thread)"])
 
 
 if __name__ == "__main__":

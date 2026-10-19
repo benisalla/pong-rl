@@ -2,9 +2,9 @@
 
 Each agent plays its own policy: the policy-gradient family (pg, reinforce, a2c, ppo) samples
 from pi(a|s), the stochastic policy it was trained to optimise; the DQN family takes
-argmax_a Q(s, a) (epsilon = 0). ``greedy=True`` forces argmax for everyone (``pong-eval --greedy``):
-for Karpathy's UP/DOWN-only policy that is usually *worse*, because a paddle that must always move
-jitters around the ball instead of hovering under it.
+argmax_a Q(s, a) (epsilon = 0). ``greedy=True`` forces argmax for everyone (``pong-eval --greedy``).
+For a half-trained policy greedy can be worse (an UP/DOWN-only paddle jitters around the ball);
+for the trained small-game agents it adds 0.4 to 1.3 points (docs/evaluation.md).
 
 Score = points won - points lost in one game (first to 5 on the small game, so in [-5, 5];
 first to 21 on ALE Pong, so in [-21, 21]). The N episodes run as N parallel copies with fixed

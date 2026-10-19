@@ -253,12 +253,13 @@ md("""
 
 Same game, same preprocessing, same evaluation (mean score over 30 games on fixed serves, score =
 points won - points lost, first to 5, so in [-5, 5]; a random agent scores about -3.3). These are the
-repository's default budgets. On a Kaggle CPU/GPU session each takes a few minutes; set
-`SMALL_GAME_FRACTION = 1.0` for the full budgets used in the README, or keep it small for a quick tour.
+repository's default budgets, the ones behind the README table: 2-6 minutes per method on one CPU
+thread, about 30 minutes for all seven. Lower `SMALL_GAME_FRACTION` for a quicker tour (below ~0.5 the
+on-policy methods stop before they win, because their learning rate decays over the shorter budget).
 """)
 
 code("""
-SMALL_GAME_FRACTION = 0.25   # 1.0 = the README budgets (10-20 min per method on one CPU thread)
+SMALL_GAME_FRACTION = 1.0    # 1.0 = the README budgets (2-6 min per method on one CPU thread)
 ALGOS = ["pg", "reinforce", "a2c", "ppo", "dqn", "double-dqn", "dueling-dqn"]
 small_runs = []
 for algo in ALGOS:

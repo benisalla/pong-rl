@@ -1,10 +1,10 @@
 # Training
 
 ```bash
-pong-train --algo ppo                                # small game, default budget (~10 min, 1 thread)
+pong-train --algo ppo                                # small game, default budget (~3.5 min, 1 thread)
 pong-train --algo pg                                 # Karpathy, frame differences (the notebook's method)
 pong-train --algo dqn --per --n-step 3               # any DQN upgrade is a flag
-pong-train --algo a2c --obs diff --steps 200000      # every method accepts --obs diff|stack
+pong-train --algo a2c --obs diff                     # every method accepts --obs diff|stack
 pong-train --algo ppo --env ale --gamma 0.99 --steps 4096 --n-envs 4    # ALE smoke run
 pong-train --algo ppo --help                         # every knob
 ```
@@ -51,17 +51,20 @@ Short probes (< 3 min each, ~40-300 k steps) before the real runs:
 * **Vectorised acting for DQN.** One forward pass for 8 games instead of 8 passes for 1 game took DQN
   from ~190 to ~310 steps/s; the replay ratio (64 samples per 8 steps) is unchanged.
 
-## Speed on this machine (shared 8-core CPU under heavy load, one thread per run)
+## Speed on this machine (shared 8-core CPU, one thread per run)
 
-| method | env steps / s (small game) | env steps / s (ALE smoke run) |
-|---|---|---|
-| `pg` | ~2 000 | ~380 |
-| `reinforce` | ~1 400 | |
-| `a2c` | ~1 100 | |
-| `ppo` | ~700 | ~65 |
-| DQN family | ~300 | ~37 |
+Measured environment steps per second, including the periodic evaluations. The probes ran while
+the machine was heavily loaded (load ~18 on 8 cores); the final runs ran when it was quieter.
 
-The DQN family is the slowest per step (a gradient step every 8 steps on 64 samples) and the
+| method | probes (loaded) | final runs | ALE smoke run (loaded) |
+|---|---|---|---|
+| `pg` | ~2 000 | 5 380 | ~380 |
+| `reinforce` | ~1 400 | 3 910 | |
+| `a2c` | ~1 100 | 3 760 | |
+| `ppo` | ~700 | 1 930 | ~65 |
+| `dqn` / `double-dqn` / `dueling-dqn` (+PER, 3-step) | ~300 | 830 / 740 / 630 | ~37 |
+
+The DQN family is the slowest per step (a gradient step of 64 samples every 8 steps) and the
 fastest per sample; PPO sits in between; pg is cheap per step and needs many steps.
 
 ## ALE Pong: the real runs (Kaggle / Colab GPU)

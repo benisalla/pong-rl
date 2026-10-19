@@ -1,7 +1,7 @@
 # Tests
 
 ```bash
-OMP_NUM_THREADS=1 pytest -q          # ~35 tests, < 1 min on one CPU thread
+OMP_NUM_THREADS=1 pytest -q          # 34 tests, < 1 min on one CPU thread
 ```
 
 | file | what it checks |

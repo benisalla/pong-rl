@@ -33,7 +33,7 @@ def plot_runs(run_dirs, out_path: str, title: str = "", window: int = 30, x: str
             axes[1].plot(xs, [e["mean"] for e in ev], "o-", color=c, label=name, ms=3, lw=1.5)
     xlabel = "environment steps" if x == "steps" else "wall-clock minutes (1 CPU thread)"
     axes[0].set_title(f"training score (moving average of {window} games)")
-    axes[1].set_title("greedy evaluation score")
+    axes[1].set_title("evaluation score (10 games, fixed serves)")
     for ax in axes:
         ax.set_xlabel(xlabel)
         ax.set_ylabel("points won - points lost")
